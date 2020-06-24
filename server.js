@@ -35,7 +35,7 @@ app.set('view engine', '.hbs');
 
 app.get('/', function(req, res) {
 
-    res.send('Welcome to Passport with Sequelize');
+    res.send('Welcome to nothing ;(');
 
 });
 
@@ -43,17 +43,16 @@ app.get('/', function(req, res) {
 var models = require("./app/models");
 
 //Routes
+var authRoute = require('./app/routes/auth.js')(app, passport);
 
-var authRoute = require('./app/routes/auth.js')(app,passport);
+var productsRoute = require('./app/routes/products.js')(app, passport);
 
 
 //load passport strategies
-
 require('./app/config/passport/passport.js')(passport, models.user);
 
 
 //Sync Database
-
 models.sequelize.sync().then(function() {
 
     console.log('Nice! Database looks fine')
