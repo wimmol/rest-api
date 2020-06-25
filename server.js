@@ -1,10 +1,10 @@
-var express = require('express')
-var app = express()
-var passport = require('passport')
-var session = require('express-session')
-var bodyParser = require('body-parser')
-var env = require('dotenv')
-var exphbs = require('express-handlebars')
+const express = require('express');
+const app = express();
+const passport = require('passport');
+const session = require('express-session');
+const bodyParser = require('body-parser');
+const env = require('dotenv');
+const exphbs = require('express-handlebars');
 
 
 //For BodyParser
@@ -35,17 +35,21 @@ app.set('view engine', '.hbs');
 
 app.get('/', function(req, res) {
 
-    res.send('Welcome to nothing ;(');
+    res.send('main page');
 
 });
 
 //Models
-var models = require("./app/models");
+const models = require("./app/models");
 
 //Routes
-var authRoute = require('./app/routes/auth.js')(app, passport);
+const authRoute = require('./app/routes/auth.js')(app, passport);
 
-var productsRoute = require('./app/routes/products.js')(app, passport);
+const productsRoute = require('./app/routes/product.js')(app, models.product);
+
+const ordersRoute = require('./app/routes/order.js')(app, models.order);
+
+const orderedProductsRoute = require('./app/routes/orderedProducts.js')(app, models.orderedProducts);
 
 
 //load passport strategies
@@ -55,7 +59,7 @@ require('./app/config/passport/passport.js')(passport, models.user);
 //Sync Database
 models.sequelize.sync().then(function() {
 
-    console.log('Nice! Database looks fine')
+    console.log('DB works')
 
 
 }).catch(function(err) {
@@ -64,13 +68,13 @@ models.sequelize.sync().then(function() {
 
 });
 
+const port = 3002;
+app.listen(port, function(err) {
 
-app.listen(3000, function(err) {
-
-    if (!err)
-
-        console.log("Site is live");
-
+    if (!err) {
+        console.log(`Server listens on port ${port}`);
+        console.log(`localhost:${port}/dashboard`)
+    }
     else console.log(err)
 
 });

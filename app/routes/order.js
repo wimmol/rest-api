@@ -1,7 +1,7 @@
-module.exports = function(app, orderedProduct) {
+module.exports = function(app, order) {
 
-    app.get('/ordered-products', (res, req) => {
-        orderedProduct.findAll().then(
+    app.get('/orders', (res, req) => {
+        order.findAll().then(
             res => {
                 req.status(200).json(res);
             },
@@ -13,8 +13,8 @@ module.exports = function(app, orderedProduct) {
 
     });
 
-    app.get('/ordered-products/:id', (res, req) => {
-        orderedProduct.findByPk(res.params.id).then(
+    app.get('/orders/:id', (res, req) => {
+        order.findByPk(res.params.id).then(
             res => {
                 req.status(200).json(res);
             },
@@ -25,39 +25,39 @@ module.exports = function(app, orderedProduct) {
 
     });
 
-    app.post('/ordered-products', (res, req) => {
+    app.post('/orders', (res, req) => {
 
         const data  = res.body;
         if (data === "{}" || !data) {
             req.status(400).send("empty request");
         } else {
-            orderedProduct.create(data);
+            order.create(data);
             req.status(200).json(data);
         }
 
     });
 
-    app.put('/ordered-products/:id', (req, res) => {
+    app.put('/orders/:id', (req, res) => {
 
         const data  = req.body;
         if (data === "{}" || !data) {
             res.status(400).send("empty request");
         } else {
-            orderedProduct.update(data,
+            order.update(data,
                 { where: {id: req.params.id} });
             res.status(200).json(data);
         }
     });
 
-    app.delete('/ordered-products/:id', (req, res) => {
+    app.delete('/orders/:id', (req, res) => {
 
-        orderedProduct.findByPk(req.params.id).then(
+        order.findByPk(req.params.id).then(
             result => {
                 if (result) {
-                    orderedProduct.destroy({where: {id: req.params.id}});
+                    order.destroy({where: {id: req.params.id}});
                     res.status(200).json(req.params.id);
                 }
-                else res.status(400).send("ordered product is not found");
+                else res.status(400).send("order is not found");
             },
             err => res.status(400).json(err)
         )

@@ -48,10 +48,9 @@ module.exports = function(sequelize, Sequelize) {
         },
 
         role: {
-            type: Sequelize.ENUM('admin', 'customer'),
+            type: Sequelize.ENUM('customer', 'admin'),
             defaultValue: 'customer'
         }
-
 
     });
 
